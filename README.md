@@ -1,5 +1,5 @@
 # ez-exporter
-Export various logos in RGB and CMYK using Inkporter and Inkscape.You can change the logo.svg file by your logo file, but it must send the same name "logo.svg".
+Export various logos in RGB and CMYK and many formats using Inkporter and Inkscape.You can change the logo.svg file by your logo file, but it must send the same name "logo.svg".
 
 # Install
 
