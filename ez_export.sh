@@ -1,47 +1,39 @@
 #!/bin/bash
+#EPS EXPORT LIKE A BITMAP IMAGE
 
 #RGB - eps,jpg,png,svg
 #CMYK - jpg,pdf,eps,svg
 
+read -p "type our logo id:" id_logo
+
 #make folders
 if [ ! -d "Logotipo" ]; then
 mkdir Logotipo
-mkdir 'Padrão' RGB CMYK
-mv 'Padrão' ./Logotipo
-mv RGB CMYK ./Logotipo/'Padrão'/
+mkdir $id_logo RGB CMYK
+mv $id_logo ./Logotipo
+mv RGB CMYK ./Logotipo/$id_logo/
 fi
 
-#// LOGO PADRÃO RGB // #
+#// RGB EXPORT // #
 
 #PNG
-inkporter logo.svg padrao < ./public/export_profiles/RGB/png-rgb
-mv padrao.png padrao-rgb.png && mv padrao-rgb.png ./Logotipo/'Padrão'/RGB/
-
-
-#EPS low quality
-#inkporter logo.svg padrao < ./public/export_profiles/eps-rgb
-#mv padrao.eps padrao-rgb.eps
-#mv padrao-rgb.eps ./Logotipo/'Padrão'/RGB/
+inkporter logo.svg $id_logo < ./public/export_profiles/RGB/png-rgb
+mv $id_logo.png $id_logo-rgb.png && mv $id_logo-rgb.png ./Logotipo/$id_logo/RGB/
 
 #JPG 
-inkporter logo.svg padrao < ./public/export_profiles/RGB/jpg-rgb 
-mv padrao.jpg padrao-rgb.jpg 
-mv padrao-rgb.jpg ./Logotipo/'Padrão'/RGB
+#inkporter logo.svg $id_logo < ./public/export_profiles/RGB/jpg-rgb 
+#mv $id_logo.jpg $id_logo-rgb.jpg && mv $id_logo-rgb.jpg ./Logotipo/$id_logo/RGB
 
 #SVG
-inkporter logo.svg padrao < ./public/export_profiles/RGB/svg-rgb
-mv padrao.svg padrao-rgb.svg
-mv padrao-rgb.svg ./Logotipo/'Padrão'/RGB
+#inkporter logo.svg $id_logo < ./public/export_profiles/RGB/svg-rgb
+#mv $id_logo.svg $id_logo-rgb.svg && mv $id_logo-rgb.svg ./Logotipo/$id_logo/RGB
 
-#// LOGO PADRÃO CMYK // #
-echo "fim do script"
+#// CMYK EXPORT // #
 
 #JPG
-inkporter logo.svg padrao < ./public/export_profiles/CMYK/jpg-cmyk 
-mv padrao.jpg padrao-cmyk.jpg 
-mv padrao-cmyk.jpg ./Logotipo/'Padrão'/CMYK
+#inkporter logo.svg $id_logo < ./public/export_profiles/CMYK/jpg-cmyk 
+#mv $id_logo.jpg $id_logo-cmyk.jpg && mv $id_logo-cmyk.jpg ./Logotipo/$id_logo/CMYK
 
 #PDF
-inkporter logo.svg padrao < ./public/export_profiles/CMYK/pdf-cmyk
-mv padrao.pdf padrao-cmyk.pdf
-mv padrao-cmyk.pdf ./Logotipo/'Padrão'/CMYK
+#inkporter logo.svg $id_logo < ./public/export_profiles/CMYK/pdf-cmyk
+#mv $id_logo.pdf $id_logo-cmyk.pdf && mv $id_logo-cmyk.pdf ./Logotipo/$id_logo/CMYK
