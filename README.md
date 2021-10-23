@@ -1,3 +1,5 @@
+![alt text](https://github.com/Adriel-Filipe/ez-exporter/blob/main/public/capa_ez.png)
+
 # ez-exporter
 Export various logos in RGB and CMYK and many formats using Inkporter and Inkscape.You can change the logo.svg file by your logo file, but it must send the same name "logo.svg".
 
