@@ -48,6 +48,6 @@ sudo apt update -y
 sudo apt install inkporter -y
 ;;
 *)
-echo "this option not exist"
+echo "Option not find"
 exit 1
 esac 
