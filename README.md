@@ -16,4 +16,4 @@ Export various logos in RGB and CMYK and many formats using Inkporter and Inksca
 
 
 # About Logo versions
-![alt text](https://github.com/Adriel-Filipe/ez-exporter/blob/main/public/logo_example.png)
+![alt text](https://github.com/Adriel-Filipe/ez-exporter/blob/main/public/logo_example.jpg)
