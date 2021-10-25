@@ -13,3 +13,7 @@ Export various logos in RGB and CMYK and many formats using Inkporter and Inksca
 # Run
 ### $ sudo chmod +x ez_exporter.sh
 ### $ ./ez_exporter.sh
+
+
+# About Logo versions
+![alt text](https://github.com/Adriel-Filipe/ez-exporter/blob/main/public/logo_example.png)
