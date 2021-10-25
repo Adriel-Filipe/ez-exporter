@@ -42,7 +42,7 @@ sudo chmod 777 /usr/ /usr/share/ /usr/share/inkscape/ /usr/share/inkscape/extens
 sudo cp -r ./public/inkporter_extension/* /usr/share/inkscape/extensions/
 fi
 
-if [ $op3="3" ]; then
+if [ $op3="1" ]; then
 #install inkporter cli 
 curl -s --compressed "https://gimpscape.github.io/gimpscape-ppa/tools/KEY.gpg" | sudo apt-key add -
 sudo curl -s --compressed -o /etc/apt/sources.list.d/gimpscape-ppa.list "https://gimpscape.github.io/gimpscape-ppa/tools/gimpscape-ppa.list"
