@@ -7,7 +7,7 @@ echo "4) install all"
 
 function install_inkscape() {
 sudo add-apt-repository ppa:inkscape.dev/stable -y
-sudo apt update -y && sudo apt install inkscape -y
+sudo apt update -y &&  sudo apt install inkscape -y
 echo ""
 }
 
@@ -16,11 +16,9 @@ sudo chmod 777 /usr/ /usr/share/ /usr/share/inkscape/ /usr/share/inkscape/extens
 sudo cp -r ./public/inkporter_extension/* /usr/share/inkscape/extensions/
 echo ""
 }
-
 function install_inkporter_cli() {
-curl -s --compressed "https://gimpscape.github.io/gimpscape-ppa/tools/KEY.gpg" | sudo apt-key add -
-sudo curl -s --compressed -o /etc/apt/sources.list.d/gimpscape-ppa.list "https://gimpscape.github.io/gimpscape-ppa/tools/gimpscape-ppa.list"
-sudo apt update -y && sudo apt install inkporter -y
+sudo cp -r ./public/inkporter /usr/local/bin/
+sudo chmod +x inkporter
 echo ""
 }
 
