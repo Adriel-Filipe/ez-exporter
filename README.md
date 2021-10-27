@@ -10,11 +10,9 @@ Export various logos in RGB and CMYK and many formats using [Inkporter](https://
 ### $ sudo ./install.sh
 
 # Run
-### $ sudo chmod +x ez_exporter.sh
-### $ ./ez_exporter.sh
-
+### $ ez-exporter
 
 # About Logo versions
 
-Some examples:
+# See some examples:
 ![alt text](https://github.com/Adriel-Filipe/ez-exporter/blob/main/public/logo_example.jpg)
