@@ -4,13 +4,13 @@ INSTALLDIR=$(which inkporter)
 INKSCAPEDIR=$(which inkscape)
 VERSION="2.3.1"
 
-# Buang tanda pagar pada dua baris di bawah ini bila Anda menggunakan Inkscape Flatpak
+# Unmark the two lines below if you are using Inkscape Flatpak
 # shopt -s expand_aliases
 # alias inkscape='flatpak run org.inkscape.Inkscape'
 
 if [ "$1" = "--version" ] ; then
   echo "Inkporter v$VERSION"
-  echo "Dipadukan dengan" $(inkscape --version)
+  echo "Combined with" $(inkscape --version)
   exit 0
 fi
 
@@ -25,34 +25,34 @@ if [ "$1" = "--enable-native" ] ; then
 fi
 
 if [ "$1" = "--deps-info" ] ; then
-  echo "Versi Ghostscript"
+  echo "Version Ghostscript"
   gs --version 
   echo
-  echo "Versi WEBP"
+  echo "Version WEBP"
   cwebp -version 
   echo
-  echo "Versi Inkscape"
+  echo "Version Inkscape"
   if inkscape --version | grep "Inkscape 1.*" ;then 
   echo " "; else
   echo 
-  echo "JANGAN NGEYEL, INKPORTER v$VERSION"
-  echo "HANYA UNTUK INKSCAPE VERSI 1.O!";
+  echo "DON'T GET STARTED, INKPORTER v$VERSION"
+  echo "ONLY FOR INKSCAPE VERSION 1.O!";
   fi
   exit 0
 fi
 
 if [ "$1" = "--help" ] ; then
   echo
-  echo "Penggunaan Umum:"
-  echo "inkporter [FILE.svg] [POLA-ID]"
-  echo "  Contoh: inkporter desain.svg icon"
+  echo "General Use:"
+  echo "inkporter [FILE.svg] [OBJECT-ID]"
+  echo "  Example: inkporter design.svg icon"
   echo ""
-  echo "Parameter Khusus"
-  echo "  --enable-flatpak      Gunakan Inkscape dari Flatpak"
-  echo "  --enable-native       Gunakan Inkscape dari sistem"
-  echo "  --version             Menampilkan versi Inkporter"
-  echo "  --deps-info           Informasi dependensi"
-  echo "  --help                Menampilkan halaman bantuan"
+  echo "Special Parameters"
+  echo "  --enable-flatpak      Use inkscape from  Flatpak"
+  echo "  --enable-native       Use inkscape from system"
+  echo "  --version             Showing inkporter version"
+  echo "  --deps-info           Dependency informat ion"
+  echo "  --help                Showing the help page"
   echo 
   echo "Inkporter v$VERSION"
   echo "https://catatan.raniaamina.id/tools/inkporter"
@@ -62,7 +62,7 @@ fi
 
 
 echo " "
-echo "Selamat datang di:"
+echo "Welcome to:"
 echo " _       _                     _            
 (_)_ __ | | ___ __   ___  _ __| |_ ___ _ __ 
 | | '_ \| |/ / '_ \ / _ \| '__| __/ _ \ '__|
@@ -72,7 +72,7 @@ echo " _       _                     _
 ============================================"
 echo "Inkporter Version: $VERSION"
 echo " "
-echo "Silakan pilih format output yang Anda inginkan"
+echo "Please select the output format  you want"
 SOURCE=$1
 IDPATTERN=$2
 echo " "
@@ -83,37 +83,37 @@ do
     case $opt in
         "png")
             echo
-            echo "Berkas akan diekspor ke format PNG"
-            read -e -p "Tentukan DPI Ekspor (default 96 dpi): " -i "96" DPI
-            read -e -p "Buat Sebuah Folder untuk Menyimpan Hasil Ekspor Anda: " DIRECTORY
+            echo "The file will be exported to the format  PNG"
+            read -e -p "Define Export DPI (default 96 dpi): " -i "96" DPI
+            read -e -p "Create a Folder to Store Yout Export Results " DIRECTORY
             mkdir -p $DIRECTORY
             for id in $(inkscape -S $SOURCE | grep $IDPATTERN | cut -d "," -f 1)
             do 
             inkscape -j -i $id -o "$DIRECTORY/$id.png" $SOURCE -d $DPI  &>> /tmp/inkporter-png.log
-            echo "Sedang memproses $id ke $DIRECTORY/$id.png"
+            echo "Processing $id to $DIRECTORY/$id.png"
             echo ""
             done
             break
             ;;
         "jpg (CMYK)")
-            # pengecekan dependensi
-            if convert --version | grep ImageMagick > /tmp/checkers; then 
-            echo "ada"; else echo; echo "[GALAT!] ImageMagick belum terpasang!"; echo; exit; fi
-            # aksi bila dependensi telah terpenuhi
-            echo "Berkas akan diekspor ke format JPG"
-            read -e -p "Tentukan latar gambar black/white (default white): " -i "white" BGCOLOR
-            read -e -p "Pilih colorspace yang ingin digunakan RGB/CMYK (default CMYK): " -i "CMYK" COLORSPACE
-            read -e -p "Buat Sebuah Folder untuk Menyimpan Hasil Ekspor Anda: " DIRECTORY
+            # dependency checking
+            if convert --version | grep ImageMagick > /tmp/chectors; then 
+            echo "ada"; else echo; echo "[ERROR!] ImageMagick not installed!"; echo; exit; fi
+            # action when dependencies are met
+            echo "The file will be exported to the format JPG"
+            read -e -p "Set image background black/white (default white): " -i "white" BGCOLOR
+            read -e -p "Select the colorspace you want to use RGB/CMYK (default CMYK): " -i "CMYK" COLORSPACE
+            read -e -p "Create a Folder to Store Your Export Results: " DIRECTORY
             mkdir -p $DIRECTORY/.temp
             for id in $(inkscape -S $SOURCE | grep $IDPATTERN | cut -d "," -f 1)
             do 
             inkscape -j -i $id -o "$DIRECTORY/.temp/$id.png" $SOURCE -d 96 &>> /tmp/inkporter-jpg.log
-            echo "Sedang memproses $id ke $DIRECTORY/$id.jpg"
+            echo "Processing $id to $DIRECTORY/$id.jpg"
             echo ""
             done
             cd $DIRECTORY/.temp
             for i in *.png; do 
-            echo "Sedang mengoptimasi $id.jpg" 
+            echo "Optimizing $id.jpg" 
             convert "$i"  -background $BGCOLOR -flatten -quality 100 -colorspace $COLORSPACE "../${i%.*}.jpg";  
             done
             cd .. && rm -r .temp
@@ -121,27 +121,27 @@ do
             break
             ;;
         "svg")
-            echo "Berkas akan diekspor ke format SVG"
-            echo "Pastikan tidak ada objek clone dalam dokumen, id objek sudah tepat, dan Anda sudah siap gembira hari ini."
-            read -e -p "Buat Sebuah Folder untuk Menyimpan Hasil Ekspor Anda: " DIRECTORY
+            echo "The file will be exported to the format  SVG"
+            echo "Make sure there are no clone objects in the document, the object ids are correct, and you're good to go today."
+            read -e -p "Create a Folder to Store Your Export Results: " DIRECTORY
             mkdir -p $DIRECTORY
             for id in $(inkscape -S $SOURCE | grep $IDPATTERN | cut -d "," -f 1)
             do 
             inkscape -i $id -l -o "$DIRECTORY/$id.svg" $SOURCE --export-id-only &>> /tmp/inkporter-svg.log
             sleep 1
-            echo "Sedang memproses $id ke $DIRECTORY/$id.svg"
+            echo "Processing $id to $DIRECTORY/$id.svg"
             echo
             done
             break
             ;;
         "pdf")
-            echo "Berkas akan diekspor ke format PDF"
-            read -e -p "Buat Sebuah Folder untuk Menyimpan Hasil Ekspor Anda: " DIRECTORY
+            echo "The file will be exported to the format PDF"
+            read -e -p "Create a Folder to Store Your Export Results: " DIRECTORY
             mkdir -p $DIRECTORY/.temp
             for id in $(inkscape -S $SOURCE | grep $IDPATTERN | cut -d "," -f 1)
             do 
             inkscape -i $id -l -o "$DIRECTORY/.temp/$id.svg" $SOURCE --export-id-only &>> /tmp/inkporter-pdf.log
-            echo "Sedang memproses $id ke $DIRECTORY/$id.pdf"
+            echo "Processing $id to $DIRECTORY/$id.pdf"
             echo
             done
             cd $DIRECTORY/.temp
@@ -152,17 +152,17 @@ do
             break
             ;;
          "pdf-cmyk")
-            # pengecekan dependensi
-            if gs --version | grep . > /tmp/checkers; then 
-            echo "ada"; else echo; echo "[GALAT!] Paket Ghostscript belum terpasang!"; echo; exit; fi
-            # aksi bila dependensi telah terpenuhi
-            echo "Berkas akan diekspor ke format PDF (CMYK)"
-            read -e -p "Buat Sebuah Folder untuk Menyimpan Hasil Ekspor Anda: " DIRECTORY
+            # dependency checking 
+            if gs --version | grep . > /tmp/chectors; then 
+            echo "ada"; else echo; echo "[ERROR!] Patot Ghostscript is not installed yet!"; echo; exit; fi
+            #action when dependencies are met
+            echo "The file will be exported to the format PDF (CMYK)"
+            read -e -p "Create a Folder to Store Your Export Results: " DIRECTORY
             mkdir -p $DIRECTORY/.temp
             for id in $(inkscape -S $SOURCE | grep $IDPATTERN | cut -d "," -f 1)
             do 
             inkscape -i $id -l -o "$DIRECTORY/.temp/$id.svg" $SOURCE --export-id-only &>> /tmp/inkporter-pdf-cmyk.log
-            echo "Sedang memproses $id ke $DIRECTORY/$id.pdf"
+            echo "Processing $id to $DIRECTORY/$id.pdf"
             echo
             done
             cd $DIRECTORY/.temp
@@ -170,7 +170,7 @@ do
             done
             rm *.svg
             for i in *.pdf; do gs -q -dSAFER -dBATCH -dNOPAUSE -dNOCACHE -sDEVICE=pdfwrite -sColorConversionStrategy=CMYK -dProcessColorModel=/DeviceCMYK -sOutputFile="../${i%.*}.pdf" "$i"; &>> /tmp/inkporter-pdf-gs.log; 
-            echo "Sedang mengoptimasi berkas $id.pdf ke CMYK"
+            echo "File optimization $id.pdf to CMYK"
             sleep 1
             done
             cd .. && rm -r .temp && cd ..
@@ -178,35 +178,35 @@ do
             break
             ;;
         "eps-default")
-            echo "Berkas akan diekspor ke format EPS (Default)"
-            read -e -p "Buat Sebuah Folder untuk Menyimpan Hasil Ekspor Anda: " DIRECTORY
+            echo "The file will be exported to the format EPS (Default)"
+            read -e -p "Create a Folder to Store Your Export Results: " DIRECTORY
             mkdir -p $DIRECTORY/.temp
             for id in $(inkscape -S $SOURCE | grep $IDPATTERN | cut -d "," -f 1)
             do 
             inkscape -i $id -l -o "$DIRECTORY/.temp/$id.svg" $SOURCE --export-id-only &>> /tmp/inkporter-eps.log
-            echo "Sedang memproses $id ke $DIRECTORY/$id.eps"
+            echo "Processing $id to $DIRECTORY/$id.eps"
             echo
             done
             cd $DIRECTORY/.temp
             for i in *.svg; do inkscape -C --export-ignore-filters -T --export-ps-level=3 -o "../${i%.*}.eps" "$i";
-            echo "Sedang mengoptimasi berkas $id.eps"
+            echo "File optimization $id.eps"
             done
             cd .. && rm -r .temp
             cd .. 
             break
             ;;
         "booklet (CMYK)")
-            # pengecekan dependensi
-            if gs --version | grep . > /tmp/checkers; then 
-            echo "ada"; else echo; echo "[GALAT!] Paket Ghostscript belum terpasang!"; echo; exit; fi
-            # aksi bila dependensi telah terpenuhi
-            echo "Berkas akan diekspor ke format PDF Booklet"
-            read -e -p "Buat Sebuah Folder untuk Menyimpan Hasil Ekspor Anda: " DIRECTORY
+            # dependency checking 
+            if gs --version | grep . > /tmp/chectors; then 
+            echo "ada"; else echo; echo "[ERROR!] Patot Ghostscript is not installed yet!"; echo; exit; fi
+            # action when dependencies are met
+            echo "The file will be exported to the format PDF Booklet"
+            read -e -p "Create a Folder to Store Your Export Results: " DIRECTORY
             mkdir -p $DIRECTORY/.temp
             for id in $(inkscape -S $SOURCE | grep $IDPATTERN | cut -d "," -f 1)
             do 
             inkscape -i $id -l -o "$DIRECTORY/.temp/$id.svg" $SOURCE --export-id-only &>> /tmp/inkporter-pdf.log
-            echo "Sedang memproses $id ke $DIRECTORY/$id.pdf"
+            echo "Processing $id to $DIRECTORY/$id.pdf"
             echo
             done
             cd $DIRECTORY/.temp
@@ -215,10 +215,10 @@ do
             gs -q -sDEVICE=pdfwrite -dNOPAUSE -dBATCH -dSAFER -sOutputFile=../$DIRECTORY.pdf $(ls --sort=version *.pdf)  
             cd .. && rm -r .temp
             echo
-            read -p "Ingin mengubah booklet menjadi PDF dengan colorspace CMYK? (Y/N) " -n 1 -r
+            read -p "Want to convert a booklet into a PDF with CMYK? (Y/N) " -n 1 -r
             echo    # (optional) move to a new line
             if [[ $REPLY =~ ^[Yy]$ ]]
-            then echo "Mengubah $DIRECTORY.pdf ke CMYK"
+            then echo "Change $DIRECTORY.pdf to CMYK"
             gs -q -dSAFER -dBATCH -dNOPAUSE -dNOCACHE -sDEVICE=pdfwrite \
             -sColorConversionStrategy=CMYK -dProcessColorModel=/DeviceCMYK \
             -sOutputFile=$DIRECTORY-cmyk.pdf $DIRECTORY.pdf
@@ -228,22 +228,22 @@ do
             break
             ;;
         "webp")
-        # pengecekan dependensi
-            if cwebp -version | grep . > /tmp/checkers; then 
-            echo "ada"; else echo; echo "[GALAT!] Paket webp belum terpasang!"; echo; exit; fi
-            # aksi bila dependensi telah terpenuhi
-            echo "Berkas akan diekspor ke format WEBP"
-            read -e -p "Buat Sebuah Folder untuk Menyimpan Hasil Ekspor Anda: " DIRECTORY
+        # dependency checking 
+            if cwebp -version | grep . > /tmp/chectors; then 
+            echo "ada"; else echo; echo "[ERROR!] Patot webp is not installed yet!"; echo; exit; fi
+            # action when dependencies are met
+            echo "The file will be exported to the format WEBP"
+            read -e -p "Create a Folder to Store Your Export Results: " DIRECTORY
             mkdir -p $DIRECTORY/.temp
             for id in $(inkscape -S $SOURCE | grep $IDPATTERN | cut -d "," -f 1)
             do 
             inkscape -j -i $id -o "$DIRECTORY/.temp/$id.png" $SOURCE -d 96 &>> /tmp/inkporter-webp.log
-            echo "Sedang memproses $id ke $DIRECTORY/$id.webp"
+            echo "Processing $id to $DIRECTORY/$id.webp"
             echo ""
             done
             cd $DIRECTORY/.temp
             for i in *.png; do 
-            echo "Sedang mengoptimasi $id.webp" 
+            echo "Optimizing $id.webp" 
             cwebp -quiet "$i" -o "../${i%.*}.webp";  
             done
             cd .. && rm -r .temp
@@ -253,9 +253,9 @@ do
         "cancel")
             exit
             ;;
-        *) echo "Salah ndul, Ulangi! $REPLY";;
+        *) echo "Wrong ndul, Repeat! $REPLY";;
     esac
 done;
 echo " "
-echo "Selamat, berkas berhasil diekspor dan disimpan di folder '$DIRECTORY' "
+echo "Congratulations, the file was successfully exported and saved in the folder '$DIRECTORY' "
 echo " "
