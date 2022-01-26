@@ -1,81 +1,233 @@
 #!/bin/bash
-# NEED FIX
-# EPS EXPORT LIKE A BITMAP IMAGE
-# I think the JPG-CMYK export on RGB
 
 #RGB - eps,jpg,png,svg
 #CMYK - jpg,pdf,eps,svg
+
+version="2.0"
 dir_profiles=""
 
-echo "-----------"
-echo "eZ-exporter"
-echo "-----------"
-echo ""
-echo "by Adriel Filipe"
-echo "What is name of the .svg file?"
-read -p "file name:" file_svg
-echo "What is your logo ID?"
-read -p "logo ID:" id_logo
-
-#make folders
-if [ ! -d "Logotipo" ]; then
-mkdir Logotipo
-fi
-
-if [ ! -d "./Logotipo/$id_logo" ]; then
-mkdir $id_logo RGB CMYK
-mv $id_logo ./Logotipo
-mv RGB CMYK ./Logotipo/$id_logo/
-fi
-
-echo "Whats version of your logo?"
-echo "1) Colorful"
-echo "2) Positive"
-echo "3) Negative"
-echo "for more information about logo version see the README in https://github.com/adriel-filipe/ez-exporter"
-read -p  "logo version:" logo_version
-
-case "$logo_version" in
-1)
-dir_profiles="COLOR"
-;;
-2)
-dir_profiles="POSITIVE"
-;;
-3)
-dir_profiles="NEGATIVE"
-;;
-*)
-echo "option not find!"
-esac
-
-# // RGB EXPORT // #
+function RGB_EXPORT_SINGLE {
 
 #PNG
 inkporter $file_svg $id_logo < /usr/share/ez-exporter/export_profiles/$dir_profiles/RGB/png-rgb
-mv $id_logo.png "$id_logo-rgb.png" && mv $id_logo-rgb.png ./Logotipo/$id_logo/RGB/
+mv $id_logo.png "$id_logo-rgb.png" && mv $id_logo-rgb.png ./Logo/$id_logo/RGB/
 #JPG 
 inkporter $file_svg $id_logo < /usr/share/ez-exporter/export_profiles/$dir_profiles/RGB/jpg-rgb 
-mv $id_logo.jpg "$id_logo-rgb.jpg" && mv $id_logo-rgb.jpg ./Logotipo/$id_logo/RGB
+mv $id_logo.jpg "$id_logo-rgb.jpg" && mv $id_logo-rgb.jpg ./Logo/$id_logo/RGB
 #SVG
 inkporter $file_svg $id_logo < /usr/share/ez-exporter/export_profiles/$dir_profiles/RGB/svg-rgb
-mv $id_logo.svg "$id_logo-rgb.svg" && mv $id_logo-rgb.svg ./Logotipo/$id_logo/RGB
+mv $id_logo.svg "$id_logo-rgb.svg" && mv $id_logo-rgb.svg ./Logo/$id_logo/RGB
 #EPS
 inkporter $file_svg $id_logo </usr/share/ez-exporter/export_profiles/$dir_profiles/RGB/eps-rgb
-mv $id_logo.eps "$id_logo-rgb.eps" && mv $id_logo-rgb.eps ./Logotipo/$id_logo/RGB
+mv $id_logo.eps "$id_logo-rgb.eps" && mv $id_logo-rgb.eps ./Logo/$id_logo/RGB
+
+}
 
 #// CMYK EXPORT // #
 
+function CMYK_EXPORT_SINGLE {
+
 #JPG
 inkporter $file_svg $id_logo < /usr/share/ez-exporter/export_profiles/$dir_profiles/CMYK/jpg-cmyk 
-mv $id_logo.jpg "$id_logo-cmyk.jpg" && mv $id_logo-cmyk.jpg ./Logotipo/$id_logo/CMYK
+mv $id_logo.jpg "$id_logo-cmyk.jpg" && mv $id_logo-cmyk.jpg ./Logo/$id_logo/CMYK
 #PDF
 inkporter $file_svg $id_logo < /usr/share/ez-exporter/export_profiles/$dir_profiles/CMYK/pdf-cmyk
-mv $id_logo.pdf "$id_logo-cmyk.pdf" && mv $id_logo-cmyk.pdf ./Logotipo/$id_logo/CMYK
+mv $id_logo.pdf "$id_logo-cmyk.pdf" && mv $id_logo-cmyk.pdf ./Logo/$id_logo/CMYK
 #EPS
 inkporter $file_svg $id_logo < /usr/share/ez-exporter/export_profiles/$dir_profiles/CMYK/eps-cmyk
-mv $id_logo.eps "$id_logo-cmyk.eps" && mv $id_logo-cmyk.eps ./Logotipo/$id_logo/CMYK
+mv $id_logo.eps "$id_logo-cmyk.eps" && mv $id_logo-cmyk.eps ./Logo/$id_logo/CMYK
 #SVG
 inkporter $file_svg $id_logo < /usr/share/ez-exporter/export_profiles/$dir_profiles/CMYK/svg-cmyk
-mv $id_logo.svg "$id_logo-cmyk.svg" && mv $id_logo-cmyk.svg ./Logotipo/$id_logo/CMYK
+mv $id_logo.svg "$id_logo-cmyk.svg" && mv $id_logo-cmyk.svg ./Logo/$id_logo/CMYK
+
+}
+function RGB_EXPORT_ALL {
+
+#COLORFUL
+
+#PNG
+inkporter $file_svg $COLOR_ID < /usr/share/ez-exporter/export_profiles/COLOR/RGB/png-rgb
+mv $COLOR_ID.png "$COLOR_ID-rgb.png" && mv $COLOR_ID-rgb.png ./Logo/$COLOR_ID/RGB/
+#JPG 
+inkporter $file_svg $COLOR_ID < /usr/share/ez-exporter/export_profiles/COLOR/RGB/jpg-rgb 
+mv $COLOR_ID.jpg "$COLOR_ID-rgb.jpg" && mv $COLOR_ID-rgb.jpg ./Logo/$COLOR_ID/RGB
+#SVG
+inkporter $file_svg $COLOR_ID < /usr/share/ez-exporter/export_profiles/COLOR/RGB/svg-rgb
+mv $COLOR_ID.svg "$COLOR_ID-rgb.svg" && mv $COLOR_ID-rgb.svg ./Logo/$COLOR_ID/RGB
+#EPS
+inkporter $file_svg $COLOR_ID </usr/share/ez-exporter/export_profiles/COLOR/RGB/eps-rgb
+mv $COLOR_ID.eps "$COLOR_ID-rgb.eps" && mv $COLOR_ID-rgb.eps ./Logo/$COLOR_ID/RGB
+
+#POSITIVE
+
+#PNG
+inkporter $file_svg $POSITIVE_ID < /usr/share/ez-exporter/export_profiles/POSITIVE/RGB/png-rgb
+mv $POSITIVE_ID.png "$POSITIVE_ID-rgb.png" && mv $POSITIVE_ID-rgb.png ./Logo/$POSITIVE_ID/RGB/
+#JPG 
+inkporter $file_svg $POSITIVE_ID < /usr/share/ez-exporter/export_profiles/POSITIVE/RGB/jpg-rgb 
+mv $POSITIVE_ID.jpg "$POSITIVE_ID-rgb.jpg" && mv $POSITIVE_ID-rgb.jpg ./Logo/$POSITIVE_ID/RGB
+#SVG
+inkporter $file_svg $POSITIVE_ID < /usr/share/ez-exporter/export_profiles/POSITIVE/RGB/svg-rgb
+mv $POSITIVE_ID.svg "$POSITIVE_ID-rgb.svg" && mv $POSITIVE_ID-rgb.svg ./Logo/$POSITIVE_ID/RGB
+#EPS
+inkporter $file_svg $POSITIVE_ID </usr/share/ez-exporter/export_profiles/POSITIVE/RGB/eps-rgb
+mv $POSITIVE_ID.eps "$POSITIVE_ID-rgb.eps" && mv $POSITIVE_ID-rgb.eps ./Logo/$POSITIVE_ID/RGB
+
+#NEGATIVE
+
+#PNG
+inkporter $file_svg $NEGATIVE_ID < /usr/share/ez-exporter/export_profiles/NEGATIVE/RGB/png-rgb
+mv $NEGATIVE_ID.png "$NEGATIVE_ID-rgb.png" && mv $NEGATIVE_ID-rgb.png ./Logo/$NEGATIVE_ID/RGB/
+#JPG 
+inkporter $file_svg $NEGATIVE_ID < /usr/share/ez-exporter/export_profiles/NEGATIVE/RGB/jpg-rgb 
+mv $NEGATIVE_ID.jpg "$NEGATIVE_ID-rgb.jpg" && mv $NEGATIVE_ID-rgb.jpg ./Logo/$NEGATIVE_ID/RGB
+#SVG
+inkporter $file_svg $NEGATIVE_ID < /usr/share/ez-exporter/export_profiles/NEGATIVE/RGB/svg-rgb
+mv $NEGATIVE_ID.svg "$NEGATIVE_ID-rgb.svg" && mv $NEGATIVE_ID-rgb.svg ./Logo/$NEGATIVE_ID/RGB
+#EPS
+inkporter $file_svg $NEGATIVE_ID </usr/share/ez-exporter/export_profiles/NEGATIVE/RGB/eps-rgb
+mv $NEGATIVE_ID.eps "$NEGATIVE_ID-rgb.eps" && mv $NEGATIVE_ID-rgb.eps ./Logo/$NEGATIVE_ID/RGB
+
+}
+
+function CMYK_EXPORT_ALL {
+
+#COLORFUL
+
+#JPG
+inkporter $file_svg $COLOR_ID < /usr/share/ez-exporter/export_profiles/COLOR/CMYK/jpg-cmyk 
+mv $COLOR_ID.jpg "$COLOR_ID-cmyk.jpg" && mv $COLOR_ID-cmyk.jpg ./Logo/$COLOR_ID/CMYK
+#PDF
+inkporter $file_svg $COLOR_ID < /usr/share/ez-exporter/export_profiles/COLOR/CMYK/pdf-cmyk
+mv $COLOR_ID.pdf "$COLOR_ID-cmyk.pdf" && mv $COLOR_ID-cmyk.pdf ./Logo/$COLOR_ID/CMYK
+#EPS
+inkporter $file_svg $COLOR_ID < /usr/share/ez-exporter/export_profiles/COLOR/CMYK/eps-cmyk
+mv $COLOR_ID.eps "$COLOR_ID-cmyk.eps" && mv $COLOR_ID-cmyk.eps ./Logo/$COLOR_ID/CMYK
+#SVG
+inkporter $file_svg $COLOR_ID < /usr/share/ez-exporter/export_profiles/COLOR/CMYK/svg-cmyk
+mv $COLOR_ID.svg "$COLOR_ID-cmyk.svg" && mv $COLOR_ID-cmyk.svg ./Logo/$COLOR_ID/CMYK
+
+#POSITIVE
+
+#JPG
+inkporter $file_svg $POSITIVE_ID < /usr/share/ez-exporter/export_profiles/POSITIVE/CMYK/jpg-cmyk 
+mv $POSITIVE_ID.jpg "$POSITIVE_ID-cmyk.jpg" && mv $POSITIVE_ID-cmyk.jpg ./Logo/$POSITIVE_ID/CMYK
+#PDF
+inkporter $file_svg $POSITIVE_ID < /usr/share/ez-exporter/export_profiles/POSITIVE/CMYK/pdf-cmyk
+mv $POSITIVE_ID.pdf "$POSITIVE_ID-cmyk.pdf" && mv $POSITIVE_ID-cmyk.pdf ./Logo/$POSITIVE_ID/CMYK
+#EPS
+inkporter $file_svg $POSITIVE_ID < /usr/share/ez-exporter/export_profiles/POSITIVE/CMYK/eps-cmyk
+mv $POSITIVE_ID.eps "$POSITIVE_ID-cmyk.eps" && mv $POSITIVE_ID-cmyk.eps ./Logo/$POSITIVE_ID/CMYK
+#SVG
+inkporter $file_svg $POSITIVE_ID < /usr/share/ez-exporter/export_profiles/POSITIVE/CMYK/svg-cmyk
+mv $POSITIVE_ID.svg "$POSITIVE_ID-cmyk.svg" && mv $POSITIVE_ID-cmyk.svg ./Logo/$POSITIVE_ID/CMYK
+
+#NEGATIVE
+
+#JPG
+inkporter $file_svg $NEGATIVE_ID < /usr/share/ez-exporter/export_profiles/NEGATIVE/CMYK/jpg-cmyk 
+mv $NEGATIVE_ID.jpg "$NEGATIVE_ID-cmyk.jpg" && mv $NEGATIVE_ID-cmyk.jpg ./Logo/$NEGATIVE_ID/CMYK
+#PDF
+inkporter $file_svg $NEGATIVE_ID < /usr/share/ez-exporter/export_profiles/NEGATIVE/CMYK/pdf-cmyk
+mv $NEGATIVE_ID.pdf "$NEGATIVE_ID-cmyk.pdf" && mv $NEGATIVE_ID-cmyk.pdf ./Logo/$NEGATIVE_ID/CMYK
+#EPS
+inkporter $file_svg $NEGATIVE_ID < /usr/share/ez-exporter/export_profiles/NEGATIVE/CMYK/eps-cmyk
+mv $NEGATIVE_ID.eps "$NEGATIVE_ID-cmyk.eps" && mv $NEGATIVE_ID-cmyk.eps ./Logo/$NEGATIVE_ID/CMYK
+#SVG
+inkporter $file_svg $NEGATIVE_ID < /usr/share/ez-exporter/export_profiles/NEGATIVE/CMYK/svg-cmyk
+mv $NEGATIVE_ID.svg "$NEGATIVE_ID-cmyk.svg" && mv $NEGATIVE_ID-cmyk.svg ./Logo/$NEGATIVE_ID/CMYK
+
+}
+
+function MAKE_FOLDER_SINGLE {
+
+if [ ! -d "Logo" ]; then
+mkdir Logo
+fi
+
+if [ ! -d "./Logo/$id_logo" ]; then
+mkdir $id_logo RGB CMYK
+mv $id_logo ./Logo
+mv RGB CMYK ./Logo/$id_logo/
+fi
+
+}
+
+function MAKE_FOLDER_ALL {
+    
+if [ ! -d "Logo" ]; then
+mkdir Logo
+fi
+
+if [ ! -d "./Logo/$COLOR_ID" ]; then
+mkdir $COLOR_ID RGB CMYK
+mv $COLOR_ID ./Logo
+mv RGB CMYK ./Logo/$COLOR_ID/
+fi
+
+if [ ! -d "./Logo/$POSITIVE_ID" ]; then
+mkdir $POSITIVE_ID RGB CMYK
+mv $POSITIVE_ID ./Logo
+mv RGB CMYK ./Logo/$POSITIVE_ID/
+fi
+
+if [ ! -d "./Logo/$NEGATIVE_ID" ]; then
+mkdir $NEGATIVE_ID RGB CMYK
+mv $NEGATIVE_ID ./Logo
+mv RGB CMYK ./Logo/$NEGATIVE_ID/
+fi
+
+}
+
+if [ "$1" = "--help" ]; then
+    echo
+    echo "ez-exporter $version - by Adriel Filipe"
+    echo
+    echo "Argument list:"
+    echo
+    echo "--single | For export 1 logo in 1 color option"
+    echo "--all | For export 3 logos in 3 color options"
+    echo
+    exit 0
+fi
+
+if [ "$1" = "--single" ]; then
+    echo 
+    echo "ez-exporter $version - by Adriel Filipe"
+    echo 
+    echo "What is name of your.svg file?"
+    read -p "file name:" file_svg
+    echo
+    echo "What is your logo ID?"
+    read -p "logo ID:" id_logo
+    echo
+    echo "What is the color version of your logo?"
+    echo "1) Colorful"
+    echo "2) Positive"
+    echo "3) Negative"
+    echo
+    echo "for more information about logo version see the README in https://github.com/adriel-filipe/ez-exporter"
+    read -p  "logo version:" logo_version
+    MAKE_FOLDER_SINGLE
+    RGB_EXPORT_SINGLE
+    CMYK_EXPORT_SINGLE
+    exit 0
+fi
+
+if [ "$1" = "--all" ]; then
+    echo
+    echo "ez-exporter $version - by Adriel Filipe"
+    echo
+    echo "What is name of your.svg file?"
+    read -p "file name:" file_svg
+    echo
+    echo "Please insert the  ID'S in this order:"
+    read -p "COLORFUL POSITIVE NEGATIVE:" COLOR_ID POSITIVE_ID NEGATIVE_ID
+    echo $COLOR_ID $POSITIVE_ID $NEGATIVE_ID
+    MAKE_FOLDER_ALL
+    CMYK_EXPORT_ALL
+    RGB_EXPORT_ALL
+    exit 0
+fi
+
 echo "finished process."
