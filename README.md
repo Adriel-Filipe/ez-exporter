@@ -21,7 +21,16 @@ these formats are the most common for both everyday materials and visual identit
 ### $ sudo ./install.sh
 
 # Run
-### $ ez-exporter
+## For export one logo version
+### $ ez-exporter --single
+
+## For export tree logo versions
+### $ ez-exporter --all
+
+# How to find a logo id in inkscape?
+### In menu-bar click on Object > Object properties or press shift+control+o
+
+###
 
 # About Logo versions
 
