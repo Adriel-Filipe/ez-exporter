@@ -4,7 +4,6 @@
 #CMYK - jpg,pdf,eps,svg
 
 version="2.0"
-dir_profiles=""
 
 function RGB_EXPORT_SINGLE {
 
@@ -208,6 +207,19 @@ if [ "$1" = "--single" ]; then
     echo
     echo "for more information about logo version see the README in https://github.com/adriel-filipe/ez-exporter"
     read -p  "logo version:" logo_version
+    case "$logo_version" in
+    1)
+    dir_profiles="COLOR" 
+    ;;
+    2)
+    dir_profiles="POSITIVE"
+    ;;
+    3)
+    dir_profiles="NEGATIVE"
+    ;;
+    *)
+    echo "Option not find"
+    esac
     MAKE_FOLDER_SINGLE
     RGB_EXPORT_SINGLE
     CMYK_EXPORT_SINGLE
